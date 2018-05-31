@@ -38,10 +38,10 @@ import static org.apache.commons.lang3.StringUtils.join;
 @Slf4j
 public class RecordServiceHazelcastConfigBuilder {
 
-    public static final String GROUP_NAME = "nike-record-service-app";
-    public static final String CLUSTER_MEMBERS = "nike-record-service-app.cluster.members";
+    public static final String GROUP_NAME = "gm-record-service-app";
+    public static final String CLUSTER_MEMBERS = "gm-record-service-app.cluster.members";
     public static final String DEFAULT_MEMBER = "127.0.0.1:5701";
-    public static final String RECORD_SERVICE_CACHE_COORDINATION = "nike-record-service-cache-coordination";
+    public static final String RECORD_SERVICE_CACHE_COORDINATION = "gm-record-service-cache-coordination";
 
     private static RecordServiceHazelcastConfigBuilder builder;
     private String commaSepratedClusterMembers = "";

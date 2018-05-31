@@ -32,12 +32,12 @@ public class SwaggerConfigurer {
     }
 
     private ApiInfo apiInfo() {
-        String description = "Nike Record Service";
+        String description = " Record Service";
         return new ApiInfoBuilder()
-                .title("Nike Record Service")
+                .title(" Record Service")
                 .description(description)
-                .license("Nike")
-                .licenseUrl("https://www.nike.com/")
+                .license("")
+                .licenseUrl("https://www.gm.com/")
                 .version("1.0")
                 .build();
     }

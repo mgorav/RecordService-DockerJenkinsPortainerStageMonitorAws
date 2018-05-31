@@ -90,47 +90,47 @@
        ```
        
        It's worth noting here that, the **_host_** can be dynamically configured using Ansbile scripting or using BuilderDockerfile.groovy.
-       As a result, there will not be any need to change "host", when running on different machine. But its worth mentioning that in consul, NikeRecordService will be registered by ipaddress,as a consequence DHCP will be handled seamlessly and _no_need_to_change_ application configuration when moving from one environment to another. BuilderDockerfile.groovy is configured as maven goal in phase "prepare-package", hence whenever maven build is triggered "host" is resolved in config/application.yml 
+       As a result, there will not be any need to change "host", when running on different machine. But its worth mentioning that in consul, RecordService will be registered by ipaddress,as a consequence DHCP will be handled seamlessly and _no_need_to_change_ application configuration when moving from one environment to another. BuilderDockerfile.groovy is configured as maven goal in phase "prepare-package", hence whenever maven build is triggered "host" is resolved in config/application.yml 
      
-  5. Running Nike Record Service
-  ##### Run Nike Record Service without Consul (development environment)
+  5. Running  Record Service
+  ##### Run  Record Service without Consul (development environment)
   	
 	java -jar target/record-service-1.0.jar --spring.profiles.active=default --spring.cloud.consul.enabled=false	
 	
 	
-  ##### Run Nike Record Service with Consul (production like environment)
+  ##### Run  Record Service with Consul (production like environment)
   
-  As mentioned above, following command can be used to package,build & run Nike Record Service docker image:
+  As mentioned above, following command can be used to package,build & run  Record Service docker image:
   
   ```
   mvn package -DskipTests docker:build docker:run
   ```
   
-  Now the docker images of Consul and NikeRecordService is up,its time to hit the NikeRecordService. All details of the Nike Record Service APIs can be accessed using following swagger URL:
+  Now the docker images of Consul and RecordService is up,its time to hit the RecordService. All details of the  Record Service APIs can be accessed using following swagger URL:
      ```
      http://[localhost|ipAddress:hostName]:20011/swagger-ui.html
       ```
   ![alt text](./images/LattestSwagger.png)   
 
      
-   #### Nike Service Java Package Structure
-Following picture shows the package structure of Nike Record Service:
+   ####  Service Java Package Structure
+Following picture shows the package structure of  Record Service:
 
-![alt text](./images/NikeServicePackage.png)
-#### 1) "_com.nike.record.api_" package contains REST resource/handler/controller.
-#### 2) "_com.nike.record.cachecordination_" package contains classes for JPA L2 cache handling in cluster
-#### 3) "_com.nike.record.configurer_" package contains all @Configuration classes
-#### 4) "_com.nike.record.exception_" package contains exception classes and controller advise.
-#### 5) "_com.nike.record.hazelcast_" package contains classes which integrates Hazelcast
-#### 6) "_com.nike.record.loader_" package contain a service which loads data from Workbook.csv into DB
-#### 7) "_com.nike.record.model_" package contains domain model
-#### 8) "_com.nike.record.repository_" contain a record repository class
-#### 9) "_com.nike.record.rsql_" contains classes which integrate with RSQL
-#### 10)"_com.nike.record.servicelocator_" contain a service locator class
+![alt text](./images/ServicePackage.png)
+#### 1) "_com..record.api_" package contains REST resource/handler/controller.
+#### 2) "_com..record.cachecordination_" package contains classes for JPA L2 cache handling in cluster
+#### 3) "_com..record.configurer_" package contains all @Configuration classes
+#### 4) "_com..record.exception_" package contains exception classes and controller advise.
+#### 5) "_com..record.hazelcast_" package contains classes which integrates Hazelcast
+#### 6) "_com..record.loader_" package contain a service which loads data from Workbook.csv into DB
+#### 7) "_com..record.model_" package contains domain model
+#### 8) "_com..record.repository_" contain a record repository class
+#### 9) "_com..record.rsql_" contains classes which integrate with RSQL
+#### 10)"_com..record.servicelocator_" contain a service locator class
    
    #### Spring Wiring & Application Configurability
-   All the configurations of this service are externalized in the folder "/config" and not packaged inside "src/main/resources". As a result, Nike Record Service properties can be changed without rebuilding.It also uses spring profile for development ease. As a consequence a developer can work with in memory DB e.g. H2 using default profile, whereas, in production this service will work seamlessly with any other DB, by just changing profile (check application.yml file for more details).
-   Refer to package: com.nike.record.cofigurer for more details on configurability. Below are the main classes:
+   All the configurations of this service are externalized in the folder "/config" and not packaged inside "src/main/resources". As a result,  Record Service properties can be changed without rebuilding.It also uses spring profile for development ease. As a consequence a developer can work with in memory DB e.g. H2 using default profile, whereas, in production this service will work seamlessly with any other DB, by just changing profile (check application.yml file for more details).
+   Refer to package: com..record.cofigurer for more details on configurability. Below are the main classes:
    1) BeanConfigurer
    2) EclipseLinkConfigurer
    3) SwaggerConfigurer
@@ -166,12 +166,12 @@ Following picture shows the package structure of Nike Record Service:
      profiles: hazelcast
    record-service:
      cluster:
-       members: {{ nike_services_cluster_members | default("127.0.0.1:5701") }}
+       members: {{ _services_cluster_members | default("127.0.0.1:5701") }}
    ```
    
    NOTE: Ansible scripting can be used to dynamically setup cluster members.
    
-   Following are the classes which setup Hazelcast. These classes lives in the packge - com.nike.record.hazelcast:
+   Following are the classes which setup Hazelcast. These classes lives in the packge - com..record.hazelcast:
    1) RecordServiceHazelcastClusterProperty
    2) RecordServiceHazelcastConfigBuilder
    3) RecordServiceSpringConfiguration
@@ -194,7 +194,7 @@ Following picture shows the package structure of Nike Record Service:
   http://[hostName|ipAddress|localhost]:20011/v2/api-docs
   ```
   
-  #### Nike Record Service APIs URL - Context Root http://[hostName|ipAddress|localhost]:20011/v1.0/api
+  ####  Record Service APIs URL - Context Root http://[hostName|ipAddress|localhost]:20011/v1.0/api
    
    1) GET multiple records with pagination: /v1.0/api/records?search=[Query DSL]&page=[pageNumber]&size=[sizeOfPage]
    
@@ -204,9 +204,9 @@ Following picture shows the package structure of Nike Record Service:
    
    The class RecordApis implements above APIs.
    
-## Nike Record Service Querying 
+##  Record Service Querying 
    
-For querying support Nike Record Service uses [RSQL](https://github.com/jirutka/rsql-parser) (refer to package com.nike.record.rsql). This framework provides query based DSL. For querying multiple records, this DSL can be passed as a query parameter - "search".RSQL is integrated using following classes:
+For querying support  Record Service uses [RSQL](https://github.com/jirutka/rsql-parser) (refer to package com..record.rsql). This framework provides query based DSL. For querying multiple records, this DSL can be passed as a query parameter - "search".RSQL is integrated using following classes:
 
 1) RecordRsqlVisitor
 2) RsqlBuilder
@@ -243,7 +243,7 @@ RecordRsqlVisitor using visitor pattern gives org.springframework.data.jpa.domai
 
        b) Logical OR: , or or
       
-  ### Examples Nike Record Service
+  ### Examples  Record Service
   
       a) GET all records:  /v1.0/api/records?search=name==* 
 
@@ -257,7 +257,7 @@ RecordRsqlVisitor using visitor pattern gives org.springframework.data.jpa.domai
 
   ### APM - StageMonitor
   This service also provide self monitoring capabilities using open source APM framework - [stagemonitor](http://www.stagemonitor.org).
-  No java agent is required to be configured. When Nike Record Service starts, it automatically kicks in, as shown in the swagger UI below:
+  No java agent is required to be configured. When  Record Service starts, it automatically kicks in, as shown in the swagger UI below:
   
   ![alt text](./images/StagemonitorSwagger.png)
   
@@ -289,9 +289,9 @@ RecordRsqlVisitor using visitor pattern gives org.springframework.data.jpa.domai
        .......
    ```
   
-  ### NikeRecordService Jenkins Pipeline
+  ### RecordService Jenkins Pipeline
   
-  Following is the Jenkins pipeline for NikeRecordService:
+  Following is the Jenkins pipeline for RecordService:
   
   ```groovy
   pipeline {
@@ -337,16 +337,16 @@ RecordRsqlVisitor using visitor pattern gives org.springframework.data.jpa.domai
 }
   ```
   
-   ![alt text](./images/NikeRecordServiceJenkinsPipeline.png)
+   ![alt text](./images/RecordServiceJenkinsPipeline.png)
     
- ### NikeRecodService Portainer.io
+ ### RecodService Portainer.io
  
  Swarm can be enabled using following command:
  ```
     swarm init
  ```
  
- When swarm is up, NikeRecordService scaling can be tested using [portainer.io](https://portainer.io). This framework 
+ When swarm is up, RecordService scaling can be tested using [portainer.io](https://portainer.io). This framework 
  also provide production quality docker monitoring. Use following
  command to start portainer docker service:
  
@@ -368,25 +368,25 @@ RecordRsqlVisitor using visitor pattern gives org.springframework.data.jpa.domai
  ```
  
  
- ![alt text](./images/NikeRecordServicePortainer.png)
+ ![alt text](./images/RecordServicePortainer.png)
  
-  ### Deploy NikeRecordService to AWS cloud
+  ### Deploy RecordService to AWS cloud
   
-  To manually deploy NikeRecordService on Amazon ECS, Amazon [ECS command-line client](https://github.com/aws/amazon-ecs-cli)
+  To manually deploy RecordService on Amazon ECS, Amazon [ECS command-line client](https://github.com/aws/amazon-ecs-cli)
   will be used:
   1. Configure the ECS client with Amazon credentials
   2. Select the region the client is going to work in - eu-central-1
-  3. Define the default ECS cluster - nike-dev the ECS client will be working against
+  3. Define the default ECS cluster - -dev the ECS client will be working against
   4. This work is done by running the ecs-cli configure command:
    ```
   	ecs-cli configure --region eu-central-1 \
                           --access-key $AWS_ACCESS_KEY \
                           --secret-key $AWS_SECRET_KEY \
-                          --cluster nike-dev
+                          --cluster -dev
   ```
   
   The ecs-cli configure command will set the region where the cluster is located, 
-  also Amazon access and secret key, and the name of the cluster (nike-dev) to deploy. 
+  also Amazon access and secret key, and the name of the cluster (-dev) to deploy. 
   
   NOTE: 
   1. environment variables ($AWS_ACCESS_KEY and $AWS_SECRET_KEY) holds Amazon access
@@ -398,7 +398,7 @@ RecordRsqlVisitor using visitor pattern gives org.springframework.data.jpa.domai
       ecs-cli compose --file src/main/docker/docker-compose.yml up
    ```
           
-  Verify running of NikeRecordSerice by using following command:
+  Verify running of RecordSerice by using following command:
   
   ```
   ecs-cli ps

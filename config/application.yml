@@ -1,8 +1,8 @@
 #default project info followed by actual injected pom-specified values.
 project:
-  name: Nike Record Service
+  name:  Record Service
   version: 1.0
-  description: Nike Record Service
+  description:  Record Service
 info:
   build:
     name: ${project.name}
@@ -42,7 +42,7 @@ spring:
   hateoas:
     use-hal-as-default-json-media-type: false
   application:
-    name: nike-record-service
+    name: -record-service
     # default-property-inclusion: non_null
 
 ---
@@ -56,7 +56,7 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
-    url: jdbc:h2:mem:NikeService;MVCC=true;DB_CLOSE_DELAY=-1;MODE=Oracle
+    url: jdbc:h2:mem:Service;MVCC=true;DB_CLOSE_DELAY=-1;MODE=Oracle
     tomcat:
       test-on-borrow: true
       max-active: 30
@@ -103,8 +103,8 @@ spring:
 #    platform: oracle
 #    driver-class-name: oracle.jdbc.driver.OracleDriver
 #    url: {{ eps_database_url }}
-#    username: {{ nike_database_username }}
-#    password: {{ nike_database_password }}
+#    username: {{ _database_username }}
+#    password: {{ _database_password }}
 #    tomcat:
 #      test-on-borrow: true
 #      max-active: 30
@@ -119,7 +119,7 @@ spring:
   profiles: hazelcast
 record-service:
   cluster:
-    members: {{ nike_services_cluster_members }}
+    members: {{ _services_cluster_members }}
 ---
 
 
@@ -154,4 +154,4 @@ logging:
   level:
 #    org.springframework: DEBUG
     org.eclipselink: ERROR
-    com.nike.record.management: ERROR
+    com..record.management: ERROR
