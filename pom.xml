@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.gm.record</groupId>
+    <artifactId>record-service</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
+    <name>record-service</name>
+    <description>Record Service</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.0.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-consul-dependencies</artifactId>
+                <version>2.0.0.M7</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <lombok.version>1.16.16</lombok.version>
+        <eclipselink.version>2.7.1</eclipselink.version>
+        <rsql.parser.version>2.0.0</rsql.parser.version>
+        <jdbc-driver-csv.version>1.2.0</jdbc-driver-csv.version>
+        <h2database.version>1.4.196</h2database.version>
+        <oracle-driver-ojdbc6.version>12.1.0.1</oracle-driver-ojdbc6.version>
+        <io.springfox.version>2.8.0</io.springfox.version>
+        <org.hamcrest.version>1.3</org.hamcrest.version>
+        <com.hazelcast.version>3.9.2</com.hazelcast.version>
+        <commons-lang3.version>3.6</commons-lang3.version>
+        <stagemonitor.version>0.88.2</stagemonitor.version>
+        <net.sf.uadetector>2014.10</net.sf.uadetector>
+        <!--set this to your docker acct name-->
+        <docker.image.prefix>gm</docker.image.prefix>
+        <!--Set to name of project-->
+        <docker.image.name>gmrecordservice</docker.image.name>
+        <gmavenplus-plugin.version>1.5</gmavenplus-plugin.version>
+        <groovy-all.version>2.4.8</groovy-all.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-all</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-bus</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.jpa</artifactId>
+            <version>${eclipselink.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-entitymanager</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-rest</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cz.jirutka.rsql</groupId>
+            <artifactId>rsql-parser</artifactId>
+            <version>${rsql.parser.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2database.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.xbib.jdbc</groupId>
+            <artifactId>jdbc-driver-csv</artifactId>
+            <version>${jdbc-driver-csv.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${io.springfox.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${io.springfox.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>${org.hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast</artifactId>
+            <version>${com.hazelcast.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast-spring</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.stagemonitor</groupId>
+            <artifactId>stagemonitor-tracing-elasticsearch</artifactId>
+            <version>${stagemonitor.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.stagemonitor</groupId>
+            <artifactId>stagemonitor-logging</artifactId>
+            <version>${stagemonitor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.stagemonitor</groupId>
+            <artifactId>stagemonitor-os</artifactId>
+            <version>${stagemonitor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.stagemonitor</groupId>
+            <artifactId>stagemonitor-alerting</artifactId>
+            <version>${stagemonitor.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.stagemonitor</groupId>
+            <artifactId>stagemonitor-web-servlet</artifactId>
+            <version>${stagemonitor.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.uadetector</groupId>
+            <artifactId>uadetector-resources</artifactId>
+            <version>${net.sf.uadetector}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <addResources>true</addResources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.24.0</version>
+
+
+                <configuration>
+                    <dockerHost>unix:///var/run/docker.sock</dockerHost>
+
+                    <verbose>true</verbose>
+                    <images>
+                        <image>
+                            <name>consul</name>
+                            <run>
+                                <ports>
+                                    <port>8400:8400</port>
+                                    <port>8500:8500</port>
+                                    <port>8600:8600</port>
+                                </ports>
+                                <env>
+                                    <CONSUL_LOCAL_CONFIG>
+                                        {"bootstrap_expect":1,"data_dir":"/usr/local/bin/consul.d/data1","server":true}
+                                    </CONSUL_LOCAL_CONFIG>
+                                </env>
+                                <!--wait for CONSUL to start-->
+                                <wait>
+                                    <time>10000</time>
+                                </wait>
+                            </run>
+                        </image>
+
+                        <image>
+                            <name>${docker.image.prefix}/${docker.image.name}</name>
+                            <build>
+
+                                <dockerFileDir>${project.basedir}/src/main/docker/</dockerFileDir>
+                                <assembly>
+                                    <targetDir>/</targetDir>
+                                    <inline>
+                                        <files>
+                                            <file>
+                                                <source>
+                                                    ${project.build.directory}/${build.finalName}.${project.packaging}
+                                                </source>
+                                                <outputDirectory>.</outputDirectory>
+                                                <destName>${project.artifactId}-${project.version}.jar</destName>
+                                            </file>
+                                        </files>
+                                        <fileSet>
+                                            <directory>${project.build.directory}/../config</directory>
+                                            <outputDirectory>.</outputDirectory>
+                                            <includes>
+                                                <include>**/*.*</include>
+                                            </includes>
+                                        </fileSet>
+                                        <fileSet>
+                                            <directory>${project.build.directory}/../src/main/resources/data</directory>
+                                            <outputDirectory>/src/main/resources/data</outputDirectory>
+                                            <includes>
+                                                <include>**/*.*</include>
+                                            </includes>
+                                        </fileSet>
+                                    </inline>
+                                </assembly>
+
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                            </build>
+                            <run>
+                                <env>
+                                    <SPRING_PROFILES_ACTIVE>default,consul</SPRING_PROFILES_ACTIVE>
+                                </env>
+                                <ports>
+                                    <port>20011:20011</port>
+                                </ports>
+
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <delimiters>
+                        <delimiter>@</delimiter>
+                    </delimiters>
+                    <useDefaultDelimiters>false</useDefaultDelimiters>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>co.escapeideas.maven</groupId>
+                <artifactId>ansible-maven-plugin</artifactId>
+                <version>1.3.0</version>
+                <configuration>
+                    <playbook>${basedir}/config/deploy.yml</playbook>
+                    <extraVars>
+                        <gm.service.hostname>gm_service_hostname=${env.HOSTNAME}</gm.service.hostname>
+                    </extraVars>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>${gmavenplus-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <scripts>
+                        <script>file:///${project.basedir}/src/main/scripts/BuildDockerfile.groovy</script>
+                    </scripts>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-all</artifactId>
+                        <!-- any version of Groovy \>= 1.5.0 should work here -->
+                        <version>${groovy-all.version}</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+        </plugins>
+    </build>
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/libs-milestone</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+</project>

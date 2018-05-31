@@ -1,0 +1,157 @@
+#default project info followed by actual injected pom-specified values.
+project:
+  name: Nike Record Service
+  version: 1.0
+  description: Nike Record Service
+info:
+  build:
+    name: \${project.name}
+    description: \${project.description}
+    version: \${project.version}
+
+
+server:
+  error:
+    whitelabel: false
+  port: 20011
+  tomcat:
+    max-threads: 200
+
+management:
+  endpoints:
+      web:
+        exposure:
+          include: '*'
+        base-path: /
+  server:
+    port: 21011
+  info:
+    build:
+      enabled: true
+    defaults:
+      enabled: true
+    git:
+      enabled: true
+
+spring:
+  jackson:
+    date-format: d/MM/yyyy
+    serialization:
+      write_dates_as_timestamps: false
+
+  hateoas:
+    use-hal-as-default-json-media-type: false
+  application:
+    name: nike-record-service
+    # default-property-inclusion: non_null
+
+---
+spring:
+  profiles: default
+  record-service:
+    cluster:
+      members: 127.0.0.1:5701
+  dataSource:
+    platform: h2
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    url: jdbc:h2:mem:NikeService;MVCC=true;DB_CLOSE_DELAY=-1;MODE=Oracle
+    tomcat:
+      test-on-borrow: true
+      max-active: 30
+      min-idle: 1
+      initial-size: 30
+  jpa:
+    properties:
+      eclipselink.persistence-context.flush-mode: COMMIT
+      eclipselink.weaving: static
+      eclipselink.ddl-generation: create-tables
+
+      eclipselink.logging.timestamp: true
+      eclipselink.logging.session: true
+      eclipselink.logging.connection: true
+      eclipselink.logging.thread: true
+
+#      eclipselink.logging.level.transaction: ALL
+#      eclipselink.logging.level.sql: ALL
+#      eclipselink.logging.level.event: ALL
+#      eclipselink.logging.level.connection: ALL
+#      eclipselink.logging.level.query: ALL
+#      eclipselink.logging.level.cache: ALL
+#      eclipselink.logging.level: ALL
+#      eclipselink.logging.parameters: true
+
+      eclipselink.cache.shared.default: true
+      eclipselink.jdbc.batch-writing: jdbc
+      eclipselink.jdbc.batch-writing.size: 1000
+      eclipselink.jdbc.cache-statements: true
+      eclipselink.jdbc.cache-statements.size: 1000
+      eclipselink.jdbc.bind-parameters: true
+      eclipselink.cache-usage: CheckCacheThenDatabase
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+
+---
+
+#spring:
+#  profiles: prodoracle
+#  datasource:
+#    platform: oracle
+#    driver-class-name: oracle.jdbc.driver.OracleDriver
+#    url: {{ eps_database_url }}
+#    username: {{ nike_database_username }}
+#    password: {{ nike_database_password }}
+#    tomcat:
+#      test-on-borrow: true
+#      max-active: 30
+#      min-idle: 1
+#      initial-size: 30
+#      validation-query: select 1 from dual
+
+---
+
+---
+spring:
+  profiles: hazelcast
+record-service:
+  cluster:
+    members: {{ nike_services_cluster_members }}
+---
+
+
+
+---
+spring:
+  profiles: consul
+  cloud:
+    consul:
+      host: ${myhostname}
+      port: 8500
+      discovery:
+        health-check-path: /health
+        instanceId: \${spring.application.name}:\${random.value}
+        prefer-ip-address: true
+        health-check-interval: 10s
+      config:
+        enabled: true
+        watch:
+          enabled: true
+        failFast: false
+---
+
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /v1.0/api/api-docs
+
+logging:
+  level:
+#    org.springframework: DEBUG
+    org.eclipselink: ERROR
+    com.nike.record.management: ERROR
