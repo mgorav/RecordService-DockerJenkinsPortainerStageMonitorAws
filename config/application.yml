@@ -42,7 +42,7 @@ spring:
   hateoas:
     use-hal-as-default-json-media-type: false
   application:
-    name: -record-service
+    name: gm-record-service
     # default-property-inclusion: non_null
 
 ---
@@ -117,7 +117,7 @@ spring:
 ---
 spring:
   profiles: hazelcast
-record-service:
+gm-record-service:
   cluster:
     members: {{ _services_cluster_members }}
 ---
@@ -154,4 +154,4 @@ logging:
   level:
 #    org.springframework: DEBUG
     org.eclipselink: ERROR
-    com..record.management: ERROR
+    com.gm.record: ERROR

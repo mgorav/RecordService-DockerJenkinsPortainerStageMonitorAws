@@ -42,7 +42,7 @@ spring:
   hateoas:
     use-hal-as-default-json-media-type: false
   application:
-    name: -record-service
+    name: gm-record-service
     # default-property-inclusion: non_null
 
 ---
